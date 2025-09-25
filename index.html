@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Moodboard MVP</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input { padding: 5px; width: 70%; }
+    button { padding: 6px 10px; margin-left: 5px; }
+    ul { margin-top: 20px; list-style: none; padding: 0; }
+    li { background: #f2f2f2; margin: 5px 0; padding: 10px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>💡 Moodboard MVP</h1>
+  <input id="ideaInput" placeholder="Type your idea..." />
+  <button onclick="addIdea()">Add</button>
+  <ul id="ideaList"></ul>
+
+  <script>
+    async function refreshIdeas() {
+      const ideas = await window.api.getIdeas();
+      const list = document.getElementById("ideaList");
+      list.innerHTML = "";
+      ideas.forEach(i => {
+        const li = document.createElement("li");
+        li.innerText = i.text + " (" + i.created_at + ")";
+        list.appendChild(li);
+      });
+    }
+
+    async function addIdea() {
+      const input = document.getElementById("ideaInput");
+      if (input.value.trim() === "") return;
+      await window.api.addIdea(input.value.trim());
+      input.value = "";
+      refreshIdeas();
+    }
+
+    refreshIdeas();
+  </script>
+</body>
+</html>
