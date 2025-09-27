@@ -1,3 +1,4 @@
 node_modules
 ideas.db
 release
+.env
